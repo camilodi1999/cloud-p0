@@ -45,28 +45,26 @@ posts_schema = Event_Schema(many=True)
 
 
 def token_required(f):
-	@wraps(f)
-	def decorated(*args, **kwargs):
-		token = None
-		if 'X-Access-Token' in request.headers:
-			token = request.headers['X-Access-Token']
-		if not token:
-			return jsonify({'message' : 'Token is missing !!'}), 401
-
-		try:
-			data = jwt.decode(token, app.config['SECRET_KEY'])
-			current_user = User.query\
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        print(request.headers)
+        token = None
+        if 'X-Access-Token' in request.headers:
+            token = request.headers['X-Access-Token']
+        if not token:
+            return jsonify({'message' : 'Token is missing !!'}), 401
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+            current_user = User.query\
 				.filter_by(public_id = data['public_id'])\
 				.first()
-		except:
-			return jsonify({
+        except:
+            return jsonify({
 				'message' : 'Token is invalid !!'
 			}), 401
-		return f(current_user, *args, **kwargs)
+        return f(current_user, *args, **kwargs)
 
-	return decorated
-
-
+    return decorated
 
 @app.route('/login',methods=['POST'])
 def login():
@@ -93,7 +91,7 @@ def login():
 			'public_id': user.public_id,
 			'exp' : datetime.utcnow() + timedelta(minutes = 30)
 		}, app.config['SECRET_KEY'])
-        return make_response(jsonify({'token' : token.decode('UTF-8')}), 201)
+        return make_response(jsonify({'email':user.email, 'token' : token.decode('UTF-8')}), 201)
     
     return make_response(
 		'Could not verify',
@@ -120,7 +118,7 @@ def signup():
 			'public_id': user.public_id,
 			'exp' : datetime.utcnow() + timedelta(minutes = 30)
 		}, app.config['SECRET_KEY'])
-        return make_response(jsonify({'token' : token.decode('UTF-8')}), 201)
+        return make_response(jsonify({'email':user.email,'token' : token.decode('UTF-8')}), 201)
     else:
         return make_response('User already exists. Please Log in.', 202)
         
