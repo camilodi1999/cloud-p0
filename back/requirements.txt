@@ -1,0 +1,6 @@
+Flask-RESTful
+PyJWT
+Flask-SQLAlchemy
+Flask_marshmallow
+flask_restful
+SQLAlchemy<1.4.0
