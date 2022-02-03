@@ -11,7 +11,6 @@ const signup = (email, password) => {
   })
     .then((res) => res.json())
     .then((json) => {
-      console.log(json);
       localStorage.setItem("user", JSON.stringify(json));
       return json;
     });
@@ -28,7 +27,6 @@ const login = (email, password) => {
   })
     .then((res) => res.json())
     .then((json) => {
-      console.log(json);
       localStorage.setItem("user", JSON.stringify(json));
       return json;
     });

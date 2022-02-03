@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import authService from "../services/authService";
 
 function NavBar(props) {
   const [user, setUser] = useState({});

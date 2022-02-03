@@ -8,14 +8,15 @@ from datetime import datetime, timedelta
 from functools import wraps
 from flask_marshmallow import Marshmallow
 from datetime import datetime
+from flask_cors import CORS
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///p0.db'
+cors = CORS(app, resources={r"*":{"origins":"*"}})
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
-
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key = True)
